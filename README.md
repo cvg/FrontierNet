@@ -24,13 +24,11 @@
 
 <p align="center" style="font-size: 1.0em;">
   <a href="">
-    <img src="assets/exp.gif" alt="example" width="75%">
+    <img src="assets/exp.gif" alt="example" width="80%">
   </a>
   <br>
   <em>
-    FrontierNet learns to detect frontiers (the known–unknown boundary) and predict their information gains from visual appearance,
-    <br>
-    enabling highly efficient autonomous exploration of unknown environments.
+    FrontierNet learns to detect frontiers (the known–unknown boundary) and predict their information gains from visual appearance, enabling highly efficient autonomous exploration of unknown environments.
   </em>
 </p>
 
@@ -76,11 +74,11 @@ cd third_party/UniK3D/ && pip install -e .
 ### Single Image Inferrence 
 
 
-[HM3D](https://aihabitat.org/datasets/hm3d/) Scene:
+Image from [HM3D](https://aihabitat.org/datasets/hm3d/):
 ```bash
 python demo_single_image.py --input_img examples/hm3d_1.jpg --out_dir output/ --config config/hm3d.yaml
 ```
-[ScanNet++](https://kaldir.vc.in.tum.de/scannetpp/) Scene:
+Image from [ScanNet++](https://kaldir.vc.in.tum.de/scannetpp/):
 ```bash
 python demo_single_image.py --input_img examples/scannetpp_1.jpg --out_dir output/ --config config/scannetpp.yaml
 ```
@@ -120,7 +118,7 @@ Instruction and demo for scene exploration will be released soon.
 Pipeline Configuration for whole scene exploration will be released soon. 
 
 ## ✅ TODO
-- [ ] Add Planning Pipline by August. 
+- [ ] Add Planning pipeline by August. 
 - [x] Add support of UniK3D
 - [x] Add support of Metric3D
 

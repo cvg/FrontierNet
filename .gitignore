@@ -38,26 +38,19 @@
 build/
 Release/
 
-# Open3d folder
-Open3D/
-open3d_*/
-open3d-*/
 # pycache
 __pycache__/
 
 # third_party
 third_party/
-third_party/*
 cmake_example
 data/
-output/
 
 # logging
 *.log
 *.npz
 
 # files
-vis/
 output/
 model_weights/
 
