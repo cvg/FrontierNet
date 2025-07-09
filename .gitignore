@@ -1,0 +1,63 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# vscode
+*.vscode*
+
+# build folder
+build/
+Release/
+
+# Open3d folder
+Open3D/
+open3d_*/
+open3d-*/
+# pycache
+__pycache__/
+
+# third_party
+third_party/
+third_party/*
+cmake_example
+data/
+output/
+
+# logging
+*.log
+*.npz
+
+# files
+vis/
+output/
+model_weights/
+

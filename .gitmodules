@@ -1,0 +1,6 @@
+[submodule "third_party/Metric3D"]
+	path = third_party/Metric3D
+	url = https://github.com/YvanYin/Metric3D.git
+[submodule "third_party/UniK3D"]
+	path = third_party/UniK3D
+	url = https://github.com/lpiccinelli-eth/UniK3D.git
