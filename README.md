@@ -131,20 +131,20 @@ Pipeline Configuration for whole scene exploration will be released soon.
 If you use any ideas from the paper or code from this repo, please consider citing:
 
 ```bibtex
-@inproceedings{boysun2025frontiernet,
-  author    = {Sun, Boyang and
-               Chen, Hanzhi and
-               Leutenegger, Stefan and
-               Cadena, Cesar and
-               Pollefeys, Marc and
-               Blum, Hermann},
-  journal   = {IEEE Robotics and Automation Letters}, 
-  title     = {{FrontierNet: Learning Visual Cues to Explore}},
-  year      = {2025},
-  volume    = {},
-  number    = {},
-  pages     = {1-8},
-  doi       = {10.1109/LRA.2025.3569122}}
+@article{boysun2025frontiernet,
+  author={Sun, Boyang 
+          and Chen, Hanzhi 
+          and Leutenegger, Stefan 
+          and Cadena, Cesar and 
+          Pollefeys, Marc and 
+          Blum, Hermann},
+  journal={IEEE Robotics and Automation Letters}, 
+  title={FrontierNet: Learning Visual Cues to Explore}, 
+  year={2025},
+  volume={10},
+  number={7},
+  pages={6576-6583},
+  doi={10.1109/LRA.2025.3569122}
 }
 ```
 ## 📬 Contact
