@@ -24,7 +24,7 @@
 
 <p align="center" style="font-size: 1.0em;">
   <a href="">
-    <img src="assets/exp.gif" alt="example" width="80%">
+    <img src="assets/exp_w_text.gif" alt="example" width="80%">
   </a>
   <br>
   <em>
@@ -111,10 +111,10 @@ Then press any key to see 3D frontiers in the RGBD pointcloud:
     <br>
 </p>
 
-### 🌍 Full-Scene Exploration
+### Full-Scene Exploration
 Instruction and demo for scene exploration will be released soon. 
 
-## ⚙️ Pipeline Configurations
+## Pipeline Configurations
 Pipeline Configuration for whole scene exploration will be released soon. 
 
 ## ✅ TODO
