@@ -17,7 +17,7 @@
   <strong>RA-L 2025</strong> <br>
   <a href="https://arxiv.org/pdf/2501.04597">ArXiv</a> |
   <a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10999073">IEEE</a> |
-  <a href=""> Video</a> |
+  <a href="https://www.youtube.com/watch?v=dFEvxGz_HP0"> Video</a> |
   <a href="https://boysun045.github.io/FrontierNet-Project/"> Webpage</a>
   </h2>
   
