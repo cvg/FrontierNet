@@ -37,7 +37,7 @@
 
 ## Quick Start
 - 🔧 [Setup](#setup) — Install dependencies and prepare the environment.
-- 🚀 [Run the Demo](#execution) — Try FrontierNet on example data(single image demo for now).
+- 🚀 [Run the Demo](#execution) — Try FrontierNet on example data(single image demo and full exploration demo).
 - 🛠️ [Pipeline Configurations](#pipeline-configurations) — Customize your pipeline.
 
 ## Setup
@@ -52,7 +52,7 @@ git clone --recursive  https://github.com/cvg/FrontierNet && cd FrontierNet
 conda create -n frontiernet python=3.11 -y && conda activate frontiernet
 ```
 ```bash
-pip install -r requirements.txt
+export CMAKE_POLICY_VERSION_MINIMUM=3.5 && pip install -r requirements.txt
 ```
 ```bash
 bash download_weights.sh
@@ -71,7 +71,7 @@ cd third_party/UniK3D/ && pip install -e .
 
 
 ## Execution
-### Single Image Inferrence 
+### Single Image Inference 
 
 
 Image from [HM3D](https://aihabitat.org/datasets/hm3d/):
@@ -112,13 +112,26 @@ Then press any key to see 3D frontiers in the RGBD pointcloud:
 </p>
 
 ### Full-Scene Exploration
-Instruction and demo for scene exploration will be released soon. 
+```bash
+python demo_exploration.py --mesh examples/mv2HUxq3B53.glb  --config config/hm3d_exploration.yaml  --write_path output/exploration_state.json 
+```
+<p align="center">
+    <a href=""><img src="assets/explore.jpg" alt="example" width=60%></a> 
+    <br>
+</p>
 
-## Pipeline Configurations
-Pipeline Configuration for whole scene exploration will be released soon. 
+This launches two Open3D interactive visualizers: a smaller window showing the egocentric view and a larger one displaying the exploration progress from a top-down perspective. In the smaller view, you can manually move the camera using keyboard controls (detailed in the terminal output) and trigger exploration by pressing SPACE. The provided [example scene](https://aihabitat.org/datasets/hm3d/00876-mv2HUxq3B53/index.html) is from HM3D dataset, and you can load other scenes by using a different .glb mesh file.
+
+**Note:** This demo is a simplified Open3D-based illustration of the exploration pipeline. It sequentially executes each component (sensing, mapping, frontier detection and update, and planning) in a single-thread loop, step by step rather than in real time. This makes it easier to understand and debug the system’s logic, but also increases time and memory consumption. For full-performance, real-time exploration, a separate implementation such as in ROS is required.
+
+## Pipeline Configurations  
+Pipeline parameters are loaded from the [config](https://github.com/cvg/FrontierNet/tree/main/config). An example file, `hm3d_exploration.yaml`, is provided, where you can adjust key parameters for different components. The system uses [Wavemap](https://github.com/ethz-asl/wavemap?tab=readme-ov-file) for 3D mapping and [OMPL](https://ompl.kavrakilab.org/index.html) for path planning. You can also modify the configuration to integrate alternative mapping or planning modules.
+
 
 ## ✅ TODO
-- [ ] Add Planning pipeline by August. 
+- [ ] Add exploration result replay.
+- [ ] Add support for finer-grained update intervals in the exploration demo.   
+- [x] Add planning pipeline by August. 
 - [x] Add support of UniK3D
 - [x] Add support of Metric3D
 

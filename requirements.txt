@@ -40,13 +40,12 @@ tqdm
 trimesh
 triton>=2.4.0
 
-
 # pywavemap
 # (if building wheels fail:) export CMAKE_POLICY_VERSION_MINIMUM=3.5
-# git+https://github.com/ethz-asl/wavemap#subdirectory=library/python
+git+https://github.com/ethz-asl/wavemap#subdirectory=library/python
 
 # ompl python bindings
-# ompl==1.7.0
+ompl==1.7.0
 
 # formatting
 # black 

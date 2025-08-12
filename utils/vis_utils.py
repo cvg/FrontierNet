@@ -8,7 +8,7 @@ from typing import List, Optional, Tuple, Any
 from utils.geometry import compute_alignment_transforms, pose_difference, rot2quat
 
 
-## Open3D Basic##
+## Open3D Basic ##
 def create_camera(H, W, focal):
     fx, fy = focal, focal
     cx, cy = W / 2.0 - 0.5, H / 2.0 - 0.5
@@ -50,21 +50,6 @@ def create_interactive_vis(
     assert success
     return vis
 
-
-def o3d_voxelgrid_to_numpy(voxelgird):
-    # convert open3d voxelgrid index and 3d position to numpy array [N,3]
-    num_voxels = len(voxelgird.get_voxels())
-    print("num of voxels: ", num_voxels)
-    voxel_index_array = np.zeros((num_voxels, 3))
-    voxel_coord_array = np.zeros((num_voxels, 3)).astype(np.float32)
-    for i, voxel in enumerate(voxelgird.get_voxels()):
-        voxel_index_array[i, :] = voxel.grid_index
-        voxel_coord_array[i, :] = (
-            voxel.grid_index * voxelgird.voxel_size + voxelgird.origin
-        )
-    return voxel_index_array.astype(np.int32), voxel_coord_array
-
-
 def is_vis_moving(vis, previous_pose, trans_thre=0.02, rot_thre=0.05):
     state_v2 = get_vis_state(vis)
     cam_pose_v2 = np.linalg.inv(state_v2["cam_extrinsic"])
@@ -76,7 +61,6 @@ def is_vis_moving(vis, previous_pose, trans_thre=0.02, rot_thre=0.05):
         return True
     else:
         return False
-
 
 def get_vis_state(vis):
     """Get the state of the visualizer
@@ -405,88 +389,8 @@ def register_basic_callbacks(vis):
     return vis
 
 
-## CONVERSION ##
-def numpy_to_voxelgrid(voxel_index_array, voxel_size, origin, color=[0, 1, 0]):
-    voxel_grid = o3d.geometry.VoxelGrid()
-    voxel_grid.voxel_size = voxel_size
-    voxel_grid.origin = origin
-    for i in range(len(voxel_index_array)):
-        voxel_to_add = o3d.geometry.Voxel()
-        voxel_to_add.grid_index = voxel_index_array[i, :].reshape(3, 1).astype(np.int32)
-        voxel_to_add.color = color
-        voxel_grid.add_voxel(voxel_to_add)
-    return voxel_grid
 
-
-def numpy_coord_to_voxelgrid(voxel_coord_array, voxel_size, origin, color=[0, 1, 0]):
-    # first, convert the coord to index
-    voxel_index_array = np.rint((voxel_coord_array - origin) / voxel_size).astype(
-        np.int32
-    )
-    return numpy_to_voxelgrid(voxel_index_array, voxel_size, origin, color)
-
-
-def voxelgrid_to_lineset(voxelgrid, line_color=[1, 0, 0]):
-    voxel_size = voxelgrid.voxel_size
-    voxels = np.asarray(voxelgrid.get_voxels())
-    origin = voxelgrid.origin
-
-    corners = np.array(
-        [
-            [0, 0, 0],
-            [0, 0, 1],
-            [0, 1, 0],
-            [0, 1, 1],
-            [1, 0, 0],
-            [1, 0, 1],
-            [1, 1, 0],
-            [1, 1, 1],
-        ]
-    )
-    corners = corners * voxel_size
-
-    lines = np.array(
-        [
-            [0, 1],
-            [0, 2],
-            [1, 3],
-            [2, 3],
-            [4, 5],
-            [4, 6],
-            [5, 7],
-            [6, 7],
-            [0, 4],
-            [1, 5],
-            [2, 6],
-            [3, 7],
-        ]
-    )
-
-    vertices = []
-    line_indices = []
-
-    for v in voxels:
-        base_idx = len(vertices)
-        grid_index = np.array([v.grid_index[0], v.grid_index[1], v.grid_index[2]])
-        base_corner = (
-            grid_index * voxel_size + origin
-        )  # Add the origin to the base corner
-        vertices.extend(base_corner + corners)
-        line_indices.extend(base_idx + lines)
-
-    line_set = o3d.geometry.LineSet(
-        points=o3d.utility.Vector3dVector(vertices),
-        lines=o3d.utility.Vector2iVector(line_indices),
-    )
-
-    # Set the color of each line
-    colors = [line_color for i in range(len(line_indices))]
-    line_set.colors = o3d.utility.Vector3dVector(colors)
-
-    return line_set
-
-
-## PLOTING ##
+## PLOTTING ##
 def backproject_rgbd_to_pointcloud(rgb, depth, K, T_cam_to_world):
     """
     Backprojects an RGBD image into a 3D point cloud in world coordinates.

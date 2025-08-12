@@ -48,7 +48,7 @@ def cls2gainmap(label_mask, bin_edges):
 
 def prediction2frontiermap(df, cls_mask, n_classes=11, df_normalizer=10, threshold=0.5):
     """
-    Convert the output of the Unet model to a 2D forntier map.
+    Convert the output of the Unet model to a 2D frontier map.
     This corresponds to equation (6) and (7) in the paper.
     i.e., from D, Y to F and G
     Args:

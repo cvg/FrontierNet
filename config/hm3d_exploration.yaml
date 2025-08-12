@@ -1,0 +1,49 @@
+# ------ FrontierNet Model ------
+df_normalizer: 10 
+df_thr: 0.3
+num_classes: 11
+input_img_size: [320, 320]
+focal_length: 300.0 
+
+# ------ Frontier Manager ------
+filter_bbox: [-11, 10, -16, 4, 0.4, 1.8]    # bounding box for filtering frontiers (x_min, x_max, y_min, y_max, z_min, z_max)
+filter_max_vd_z: 0.65                         # max length of viewing direction (unit vector) in z-axis
+force_all_frontier_to_xy: False               # force all frontiers to be in the xy plane
+filter_min_gain: 1                            # minimum gain(volumn in m^3) to be considered as a valid frontier
+visited_trans_threshold: 0.5                  # threshold to consider a frontier as visited 
+visited_angle_threshold: 0.4                  # threshold to consider a frontier as visited 
+visited_gain_reduction_factor: 2000           # factor to reduce the gain of frontiers based on robot trajectory (the higher the value, the more reduction)
+utility_gain_factor: 1.0                      # the higher the value, the more dominant the gain is in the utility function
+
+render_K: [60.0, 0.0, 64.0, 0.0, 60.0, 64.0, 0.0, 0.0, 1.0]   # camera intrinsic matrix for rendering depth from occupancy grid (stay fix)
+render_H: 128                                                 # height of the rendered depth image (stay fix)
+render_W: 128                                                 # width of the rendered depth image (stay fix)
+render_d_range: 3.5                                           # depth range for rendering (stay fix)                   
+render_decrease_factor: 1.0                                   # factor to reduce the gain of frontiers based on the rendered depth image (the higher the value, the more reduction)
+
+# ------ Mapping ------
+voxel_size: 0.1         # size of each voxel in meters
+depth_range: 3.5        # depth range for volume mapping (wavemap) 
+
+# ------ Planning ------ 
+bounds: [-11, 10, -16, 4, 0.4, 1.8]     # bounding box for planning (x_min, x_max, y_min, y_max, z_min, z_max)
+use_free_grid: True                       # enable validatiy check with free grid
+use_occ_grid: True                        # enable validatiy check with occupied grid
+min_dist2occ: 0.2                         # minimum distance to occupied cells to consider a cell as valid
+max_dist2free: 0.075                      # maximum distance to free cells to consider a cell as valid
+max_planning_time: 1.5                    # maximum planning time (in seconds)
+planning_algo: rrtstar                    # planning algorithm to use(rrt, rrtstar, rrtconnect)
+
+# ------ Exploration App ------
+predict_interval: 6                   # interval for predicting frontiers (in loop iterations)           
+plan_interval: 15                     # interval for planning (in loop iterations)   
+initial_cam_extrinsic:                # initial camera extrinsic matrix
+  - [-0.76604444, -0.64278761, -0.0,          0.29643052]
+  - [ 0.0,          0.0,         -1.0,          1.0     ]
+  - [ 0.64278761, -0.76604444, -0.0,          0.27904303]
+  - [ 0.0,          0.0,          0.0,          1.0     ]
+observer_cam_extrinsic:               # observer camera extrinsic matrix (top-down view)
+  - [-2.19651623e-03, -9.99937606e-01, -1.09525786e-02, -7.20345647e+00]
+  - [-9.99869439e-01,  2.02076514e-03,  1.60318772e-02,  6.75098675e-01]
+  - [-1.60087443e-02,  1.09863629e-02, -9.99811492e-01,  2.16745306e+01]
+  - [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.00000000e+00]

@@ -319,7 +319,7 @@ class FrontierDetector(Base):
                 _feature[4] = np.median(gains[mid : int(0.9 * len(gains))])
             _feature[4] *= (
                 10 * 0.001
-            )  # recover volume TODO: this scaling is to compensate for the volume scaling in the model
+            )  # recover volume NOTE: this scaling is to compensate for the volume scaling in the detection model
 
             # robust depth (ignore zeros)
             depths = np.sort(pts[:, 5])

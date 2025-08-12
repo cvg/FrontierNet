@@ -174,36 +174,35 @@ class Frontier:
         )
 
     def to_dict(self) -> Dict[str, Any]:
-        """
-        Convert the frontier features to a dictionary.
-        """
+        """JSON-serializable dict (arrays become lists, Nones kept as None)."""
+        def _list(x): return None if x is None else np.asarray(x, dtype=float).tolist()
         return {
             "id": self.id,
-            "3d_pos": self.pos3d.tolist(),
+            "3d_pos": _list(self.pos3d),
             "gain": self.gain,
             "direct_angle": self.direct_angle,
-            "pixel_pos": self.pixel_pos.tolist(),
-            "vd": self.view_direction.tolist(),
+            "pixel_pos": _list(self.pixel_pos),
+            "vd": _list(self.view_direction),
             "valid_flag": self.is_valid,
             "u_gain": self.u_gain,
             "utility": self.utility,
-            "parent_ids": self.parent_ids,
+            "parent_ids": list(self.parent_ids),
         }
 
     def from_dict(self, data: Dict[str, Any]):
-        """
-        Load frontier features from a dictionary.
-        """
         self.id = data.get("id", 0)
-        self.pos3d = np.array(data.get("3d_pos", [0.0, 0.0, 0.0]))
-        self.gain = data.get("gain", 0.0)
-        self.direct_angle = data.get("direct_angle", 0.0)
-        self.pixel_pos = np.array(data.get("pixel_pos", [0.0, 0.0]))
-        self.view_direction = np.array(data.get("vd", [1.0, 0.0, 0.0]))
+        self.pos3d = data.get("3d_pos", None)
+        self.gain = data.get("gain", None)
+        self.direct_angle = data.get("direct_angle", None)
+        self.pixel_pos = data.get("pixel_pos", None)
+        self.view_direction = data.get("vd", None)
         self.set_valid() if data.get("valid_flag", True) else self.set_invalid()
         self.u_gain = data.get("u_gain", self.gain)
         self.utility = data.get("utility", None)
         self.parent_ids = data.get("parent_ids", [])
 
     def __repr__(self):
-        return f"Frontier(id={self.id}, pos3d={self.pos3d}, gain={self.gain}, direct_angle={self.direct_angle}, pixel_pos={self.pixel_pos}, vd={self.view_direction}, valid_flag={self.is_valid}, u_gain={self.u_gain}, utility={self.utility}, parent_ids={self.parent_ids})"
+        return (f"Frontier(id={self.id}, pos3d={self.pos3d}, gain={self.gain}, "
+                f"direct_angle={self.direct_angle}, pixel_pos={self.pixel_pos}, "
+                f"vd={self.view_direction}, valid_flag={self.is_valid}, "
+                f"u_gain={self.u_gain}, utility={self.utility}, parent_ids={self.parent_ids})")
