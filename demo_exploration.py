@@ -43,6 +43,7 @@ class ExplorerApp:
     """
     A lightweight wrapper for the exploration loop and state.
     """
+
     # ---------- constants / defaults ----------
     REFRESH_RATE = 50  # Hz
     VOX_SIZE = 0.1
@@ -64,7 +65,7 @@ class ExplorerApp:
         self.config = read_config_yaml(args.config)
         self.predict_interval: int = int(self.config.get("predict_interval", 5))
         self.plan_interval: int = int(self.config.get("plan_interval", 10))
-     
+
         # Depth source
         self.depth_source = args.depth_source
 
@@ -82,7 +83,11 @@ class ExplorerApp:
         self.mapper: Optional[WaveMapper] = None
         self.ft_manager: Optional[FrontierManager] = None
         self.ft_detector: Optional[FrontierDetector] = None
-        self.VOX_SIZE = self.config["voxel_size"] if self.config["voxel_size"] is not None else self.VOX_SIZE
+        self.VOX_SIZE = (
+            self.config["voxel_size"]
+            if self.config["voxel_size"] is not None
+            else self.VOX_SIZE
+        )
 
         # Geometry caches (for visualization in o3d)
         self.geometry_vis_1: List[o3d.geometry.Geometry] = []
@@ -143,7 +148,13 @@ class ExplorerApp:
         fovx_deg = 2.0 * np.degrees(np.arctan(W2 / (2.0 * fx2)))
 
         frustum_meshes = camera_vis_with_cylinders(
-            W_T_C2, wh_ratio=wh_ratio, scale=0.8, weight=0.0, color=[0,0,1], fovx=fovx_deg, radius=0.04
+            W_T_C2,
+            wh_ratio=wh_ratio,
+            scale=0.8,
+            weight=0.0,
+            color=[0, 0, 1],
+            fovx=fovx_deg,
+            radius=0.04,
         )
 
         # Clear previous
@@ -216,7 +227,9 @@ class ExplorerApp:
         _, depth0 = self.get_rgbd(self.vis_2)
         C2_T_W = get_vis_state(self.vis_2)["cam_extrinsic"]
         W_T_C2 = np.linalg.inv(C2_T_W)
-        self.mapper.insert_depth_to_buffer(depth=depth0, transform=W_T_C2)  # camera IN world frame
+        self.mapper.insert_depth_to_buffer(
+            depth=depth0, transform=W_T_C2
+        )  # camera IN world frame
         logging.info("Initial mapping round started.")
         self.mapper.integrate_from_buffer()
         self.mapper.interpolate_occupancy_grid()
@@ -224,13 +237,13 @@ class ExplorerApp:
         self.ft_manager.update_map(free_map=og["free"], occ_map=og["occupied"])
 
         while True:
-            
+
             C2_T_W = get_vis_state(self.vis_2)["cam_extrinsic"]
             W_T_C2 = np.linalg.inv(C2_T_W)
             n_robot_poses = len(self.ft_manager.robot_poses)
 
             logging.info(" -------Current exploration step: %d -------", n_robot_poses)
-            
+
             if n_robot_poses > max_steps:
                 logging.info("Maximum steps reached, exploration finished.")
                 break
@@ -239,8 +252,12 @@ class ExplorerApp:
                 logging.info("Time limit reached, exploration finished.")
                 break
 
-            no_more_frontier = len(self.ft_manager.valid_frontiers) == 0 and n_robot_poses > 10
-            reach_next_update = len(self.path_to_go) == 0 or ((n_robot_poses - 1) % self.predict_interval == 0)
+            no_more_frontier = (
+                len(self.ft_manager.valid_frontiers) == 0 and n_robot_poses > 10
+            )
+            reach_next_update = len(self.path_to_go) == 0 or (
+                (n_robot_poses - 1) % self.predict_interval == 0
+            )
 
             if no_more_frontier or reach_next_update:
                 logging.info("Updating frontiers.")
@@ -286,7 +303,9 @@ class ExplorerApp:
                 logging.debug(f"Replanning (interval={self.plan_interval}).")
                 self.path_to_go = self.ft_manager.plan_path_to_goal(W_T_C2) or []
                 if self.path_to_go:
-                    logging.info(f"Path to goal found with {len(self.path_to_go)} steps.")
+                    logging.info(
+                        f"Path to goal found with {len(self.path_to_go)} steps."
+                    )
                     self.move_enough = False
                 else:
                     logging.warning("No path found, deleting current goal frontier.")
@@ -337,7 +356,9 @@ class ExplorerApp:
                 radius=0.04,
                 return_mesh=False,
             )
-            axis = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.5, origin=[0, 0, 0])
+            axis = o3d.geometry.TriangleMesh.create_coordinate_frame(
+                size=0.5, origin=[0, 0, 0]
+            )
             axis.transform(W_T_C)
             frustum.append(axis)
             for g in frustum:
@@ -399,7 +420,9 @@ class ExplorerApp:
             time.sleep(0.1)
 
             # If we truly moved, update path bookkeeping
-            if is_vis_moving(self.vis_2, self.last_W_T_C2, trans_thre=0.1, rot_thre=0.26):
+            if is_vis_moving(
+                self.vis_2, self.last_W_T_C2, trans_thre=0.1, rot_thre=0.26
+            ):
                 self.last_W_T_C2 = W_T_C2
                 if self.ft_manager is not None:
                     self.ft_manager.add_robot_poses([W_T_C2])
@@ -434,10 +457,22 @@ class ExplorerApp:
         cam_intr_2 = create_camera(self.CAM2_H, self.CAM2_W, self.CAM2_F)
 
         self.vis_1 = create_interactive_vis(
-            self.CAM1_H, self.CAM1_W, cam_intr_1, show_back_face=False, light_on=False, z_near=0.02, z_far=50.0
+            self.CAM1_H,
+            self.CAM1_W,
+            cam_intr_1,
+            show_back_face=False,
+            light_on=False,
+            z_near=0.02,
+            z_far=50.0,
         )
         self.vis_2 = create_interactive_vis(
-            self.CAM2_H, self.CAM2_W, cam_intr_2, show_back_face=True, light_on=False, z_near=0.02, z_far=50.0
+            self.CAM2_H,
+            self.CAM2_W,
+            cam_intr_2,
+            show_back_face=True,
+            light_on=False,
+            z_near=0.02,
+            z_far=50.0,
         )
 
         # Load scene mesh
@@ -448,7 +483,7 @@ class ExplorerApp:
         # Initial frustum of vis_2, drawn in vis_1
         C2_T_W = get_vis_state(self.vis_2)["cam_extrinsic"]  # (W→C2)
         frustum = camera_vis_with_cylinders(
-            C2_T_W, 
+            C2_T_W,
             wh_ratio=self.CAM2_W / self.CAM2_H,
             scale=0.8,
             weight=0.0,
@@ -460,14 +495,16 @@ class ExplorerApp:
             self.vis_1.add_geometry(g)
 
         # Global axis
-        world_axis = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.5, origin=[0, 0, 0])
+        world_axis = o3d.geometry.TriangleMesh.create_coordinate_frame(
+            size=0.5, origin=[0, 0, 0]
+        )
         self.vis_1.add_geometry(world_axis, reset_bounding_box=False)
 
         # Register basic callbacks
         register_basic_callbacks(self.vis_1)
         register_basic_callbacks(self.vis_2)
 
-        # Reset intrinsics 
+        # Reset intrinsics
         set_vis_cam_intr(self.vis_1, cam_intr_1)
         set_vis_cam_intr(self.vis_2, cam_intr_2)
 
@@ -490,7 +527,11 @@ class ExplorerApp:
             "cx": intr2.intrinsic_matrix[0, 2],
             "cy": intr2.intrinsic_matrix[1, 2],
             "min_range": 0.05,
-            "max_range": self.config["depth_range"] if self.config["depth_range"] is not None else 3.5,
+            "max_range": (
+                self.config["depth_range"]
+                if self.config["depth_range"] is not None
+                else 3.5
+            ),
             "resolution": self.VOX_SIZE,
         }
         self.mapper = WaveMapper(params=params)
@@ -512,8 +553,9 @@ class ExplorerApp:
         )
 
         # Frontier Manager
-        self.ft_manager = FrontierManager(params=self.config,
-                                          log_level=self.args.log_level)
+        self.ft_manager = FrontierManager(
+            params=self.config, log_level=self.args.log_level
+        )
 
     def run(self) -> None:
         self.setup_viewers()
@@ -523,12 +565,16 @@ class ExplorerApp:
             self.exploration()
 
         else:
-            logging.info(" --- You are in manual mode, you can move the camera using WASD(translation), JL(rotation), QZ(height) keys in the small window ---")
+            logging.info(
+                " --- You are in manual mode, you can move the camera using WASD(translation), JL(rotation), QZ(height) keys in the small window ---"
+            )
+
             def on_space(vis):
                 self.exploration()
-                return False  
-            self.vis_1.register_key_callback(32, on_space)  
-            self.vis_2.register_key_callback(32, on_space)  
+                return False
+
+            self.vis_1.register_key_callback(32, on_space)
+            self.vis_2.register_key_callback(32, on_space)
             logging.info(" --- PRESS SPACE TO START EXPLORATION --- ")
 
         try:
@@ -546,12 +592,36 @@ class ExplorerApp:
 def build_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser()
     p.add_argument("--mesh", type=str, required=True, help="Path to the mesh file")
-    p.add_argument("--config", type=str, default="config/hm3d_exploration.yaml", help="FrontierNet configuration file")
-    p.add_argument("--write_path", type=str, help="JSON file to write the ftmanager state")
-    p.add_argument("--auto_start", action="store_true", default=False, help="Auto-start exploration loop")
-    p.add_argument("--max_steps", type=int, default=1000, help="Maximum number of exploration steps")
-    p.add_argument("--max_time", type=int, default=3600, help="Maximum exploration time in seconds")
-    p.add_argument("--vis_graph", action="store_true", default=False, help="Visualize the topological graph")
+    p.add_argument(
+        "--config",
+        type=str,
+        default="config/hm3d_exploration.yaml",
+        help="FrontierNet configuration file",
+    )
+    p.add_argument(
+        "--write_path", type=str, help="JSON file to write the ftmanager state"
+    )
+    p.add_argument(
+        "--auto_start",
+        action="store_true",
+        default=False,
+        help="Auto-start exploration loop",
+    )
+    p.add_argument(
+        "--max_steps",
+        type=int,
+        default=1000,
+        help="Maximum number of exploration steps",
+    )
+    p.add_argument(
+        "--max_time", type=int, default=3600, help="Maximum exploration time in seconds"
+    )
+    p.add_argument(
+        "--vis_graph",
+        action="store_true",
+        default=False,
+        help="Visualize the topological graph",
+    )
     p.add_argument(
         "--unet_weight",
         type=Path,
@@ -565,7 +635,13 @@ def build_arg_parser() -> argparse.ArgumentParser:
         choices=[ExplorerApp.DEPTH_GT, ExplorerApp.DEPTH_M3D, ExplorerApp.DEPTH_UNIK3D],
         help="Depth source",
     )
-    p.add_argument("--log_level", "-ll", type=int, default=20, help="logging level (0=notset, 10=debug, 20=info...)")
+    p.add_argument(
+        "--log_level",
+        "-ll",
+        type=int,
+        default=20,
+        help="logging level (0=notset, 10=debug, 20=info...)",
+    )
     return p
 
 
@@ -573,7 +649,7 @@ def main():
     logging.basicConfig(
         format="[%(asctime)s] %(levelname)s:%(name)s: %(message)s",
         datefmt="%H:%M:%S",
-        level=logging.WARNING,  
+        level=logging.WARNING,
     )
     print(f"Open3D version: {o3d.__version__}")
 

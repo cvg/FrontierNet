@@ -1,5 +1,4 @@
 from unik3d.models import UniK3D
-from unik3d.utils.camera import (Pinhole, OPENCV, Fisheye624, MEI, Spherical)
 import numpy as np
 import torch
 

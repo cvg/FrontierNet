@@ -175,7 +175,10 @@ class Frontier:
 
     def to_dict(self) -> Dict[str, Any]:
         """JSON-serializable dict (arrays become lists, Nones kept as None)."""
-        def _list(x): return None if x is None else np.asarray(x, dtype=float).tolist()
+
+        def _list(x):
+            return None if x is None else np.asarray(x, dtype=float).tolist()
+
         return {
             "id": self.id,
             "3d_pos": _list(self.pos3d),
@@ -202,7 +205,9 @@ class Frontier:
         self.parent_ids = data.get("parent_ids", [])
 
     def __repr__(self):
-        return (f"Frontier(id={self.id}, pos3d={self.pos3d}, gain={self.gain}, "
-                f"direct_angle={self.direct_angle}, pixel_pos={self.pixel_pos}, "
-                f"vd={self.view_direction}, valid_flag={self.is_valid}, "
-                f"u_gain={self.u_gain}, utility={self.utility}, parent_ids={self.parent_ids})")
+        return (
+            f"Frontier(id={self.id}, pos3d={self.pos3d}, gain={self.gain}, "
+            f"direct_angle={self.direct_angle}, pixel_pos={self.pixel_pos}, "
+            f"vd={self.view_direction}, valid_flag={self.is_valid}, "
+            f"u_gain={self.u_gain}, utility={self.utility}, parent_ids={self.parent_ids})"
+        )

@@ -2,6 +2,7 @@ import numpy as np
 import pywavemap as wave
 from pywavemap import InterpolationMode
 
+
 class WaveMapper:
     def __init__(self, params=None):
 
@@ -42,7 +43,7 @@ class WaveMapper:
                 },
             )
             self.params = params
-    
+
             # print all params
             print("WaveMapper initialized with parameters:")
             for key, value in params.items():
@@ -99,7 +100,6 @@ class WaveMapper:
         points_log_odds = points_log_odds.reshape(-1)
         self.occ_pts = self.query_space[points_log_odds > 0.6]
         self.free_pts = self.query_space[points_log_odds < -1e-5]
-
 
     def get_occupancy_grid(self):
         return {"occupied": self.occ_pts, "free": self.free_pts}

@@ -50,6 +50,7 @@ def create_interactive_vis(
     assert success
     return vis
 
+
 def is_vis_moving(vis, previous_pose, trans_thre=0.02, rot_thre=0.05):
     state_v2 = get_vis_state(vis)
     cam_pose_v2 = np.linalg.inv(state_v2["cam_extrinsic"])
@@ -61,6 +62,7 @@ def is_vis_moving(vis, previous_pose, trans_thre=0.02, rot_thre=0.05):
         return True
     else:
         return False
+
 
 def get_vis_state(vis):
     """Get the state of the visualizer
@@ -387,7 +389,6 @@ def register_basic_callbacks(vis):
     vis.register_key_callback(ord("J"), rotate_left)
     vis.register_key_callback(ord("C"), capture_rgbd_and_visualize)
     return vis
-
 
 
 ## PLOTTING ##
