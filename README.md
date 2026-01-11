@@ -135,6 +135,15 @@ This launches two Open3D interactive visualizers: a smaller window showing the e
 Pipeline parameters are loaded from the [config](https://github.com/cvg/FrontierNet/tree/main/config). An example file, `hm3d_exploration.yaml`, is provided, where you can adjust key parameters for different components. The system uses [Wavemap](https://github.com/ethz-asl/wavemap?tab=readme-ov-file) for 3D mapping and [OMPL](https://ompl.kavrakilab.org/index.html) for path planning. You can also modify the configuration to integrate alternative mapping or planning modules.
 
 
+## (work in progress) Evaluation
+```bash
+python eval/replay.py     --mesh examples/mv2HUxq3B53.glb     --json_file output/exploration_state.json     --config config/hm3d_exploration.yaml     --output output/exploration_with_volume.json -ll 10
+```
+
+```bash
+python eval/stat.py     --json_file output/exploration_with_volume.json     --voxel_grid "path to gt voxelgrid"
+```
+
 ## ✅ TODO
 - [ ] Add exploration result replay.
 - [ ] Add support for finer-grained update intervals in the exploration demo.   
