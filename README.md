@@ -114,7 +114,7 @@ This first plots 2D result:
 
 Then press any key to see 3D frontiers in the RGBD pointcloud:
 <p align="center">
-    <a href=""><img src="assets/plot_3d.jpg" alt="example" width=50%></a> 
+    <a href=""><img src="assets/plot_3d.jpg" alt="example" width=80%></a> 
     <br>
 </p>
 
@@ -123,7 +123,7 @@ Then press any key to see 3D frontiers in the RGBD pointcloud:
 python demo_exploration.py --mesh examples/mv2HUxq3B53.glb  --config config/hm3d_exploration.yaml  --write_path output/exploration_state.json 
 ```
 <p align="center">
-    <a href=""><img src="assets/explore.jpg" alt="example" width=60%></a> 
+    <a href=""><img src="assets/explore.jpg" alt="example" width=80%></a> 
     <br>
 </p>
 
