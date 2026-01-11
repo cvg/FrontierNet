@@ -101,7 +101,7 @@ python demo_plot.py --result_path output/<file_name>.npz
 This first plots 2D result:
 
 <p align="center">
-    <a href=""><img src="assets/plot_2d.jpg" alt="example" width="80%"></a>  
+    <a href=""><img src="assets/plot_2d.jpg" alt="example" width="100%"></a>  
     <br>
 </p>
 
