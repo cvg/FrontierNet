@@ -183,18 +183,6 @@ python vis/replay_visualization.py \
     --vis_graph
 ```
 
-### Visualization Features
-- **Large Window (Observer View)**: Top-down view showing:
-  - Scene mesh
-  - Robot trajectory (bright yellow cylinders)
-  - Detected frontiers (green frustums with coordinate axes)
-  - Current goal frontier (enlarged frustum)
-  - Current robot camera frustum (blue)
-  - Topological graph edges (white lines, with `--vis_graph`)
-
-- **Small Window (Ego View)**: First-person robot perspective that updates at each step
-
-
 
 ## ✅ TODO
 - [ ] Add support for finer-grained update intervals in the exploration demo.   
