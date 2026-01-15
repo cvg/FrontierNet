@@ -24,10 +24,8 @@ from utils.vis_utils import (
     create_interactive_vis,
     get_vis_state,
     set_vis_cam_ex,
-    set_vis_cam_intr,
     load_mesh,
     capture_depth,
-    capture_rgb,
 )
 from utils.frontier_utils import read_config_yaml
 from mapping.wavemap import WaveMapper

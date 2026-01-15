@@ -33,9 +33,6 @@ from utils.vis_utils import (
 )
 from utils.frontier_utils import read_config_yaml
 
-# Frontier classes for reconstruction
-from frontier.frontier import Frontier
-
 
 def read_exploration_entries(file_path: str) -> List[Dict[str, Any]]:
     """
