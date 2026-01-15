@@ -144,9 +144,61 @@ python eval/replay.py     --mesh examples/mv2HUxq3B53.glb     --json_file output
 python eval/stat.py     --json_file output/exploration_with_volume.json     --voxel_grid "path to gt voxelgrid"
 ```
 
+## Replay Visualization
+
+After running an exploration session with `demo_exploration.py` and saving the state with `--write_path`, you can replay and visualize the exploration trajectory step-by-step.
+
+### Basic Replay
+```bash
+python vis/replay_visualization.py \
+    --mesh examples/mv2HUxq3B53.glb \
+    --json_file output/exploration_state.json \
+    --config config/hm3d_exploration.yaml
+```
+
+### Interactive Controls
+- **Space**: Start/pause auto-replay
+- **N** or **Right Arrow**: Next step
+- **P** or **Left Arrow**: Previous step
+- **Mouse**: Navigate the observer view (large window)
+
+### Auto-Play Mode
+Automatically play through the entire trajectory:
+```bash
+python vis/replay_visualization.py \
+    --mesh examples/mv2HUxq3B53.glb \
+    --json_file output/exploration_state.json \
+    --config config/hm3d_exploration.yaml \
+    --auto_start \
+    --play_speed 0.5
+```
+
+### With Graph Visualization
+Display the topological graph edges connecting robot poses and frontiers:
+```bash
+python vis/replay_visualization.py \
+    --mesh examples/mv2HUxq3B53.glb \
+    --json_file output/exploration_state.json \
+    --config config/hm3d_exploration.yaml \
+    --vis_graph
+```
+
+### Visualization Features
+- **Large Window (Observer View)**: Top-down view showing:
+  - Scene mesh
+  - Robot trajectory (bright yellow cylinders)
+  - Detected frontiers (green frustums with coordinate axes)
+  - Current goal frontier (enlarged frustum)
+  - Current robot camera frustum (blue)
+  - Topological graph edges (white lines, with `--vis_graph`)
+
+- **Small Window (Ego View)**: First-person robot perspective that updates at each step
+
+
+
 ## ✅ TODO
-- [ ] Add exploration result replay.
 - [ ] Add support for finer-grained update intervals in the exploration demo.   
+- [x] Add exploration result replay.
 - [x] Add planning pipeline by August. 
 - [x] Add support of UniK3D
 - [x] Add support of Metric3D
