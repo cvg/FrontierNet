@@ -137,7 +137,7 @@ Pipeline parameters are loaded from the [config](https://github.com/cvg/Frontier
 
 ## (work in progress) Evaluation
 ```bash
-python eval/replay.py     --mesh examples/mv2HUxq3B53.glb     --json_file output/exploration_state.json     --config config/hm3d_exploration.yaml     --output output/exploration_with_volume.json -ll 10
+python eval/replay_dense_mapping.py     --mesh examples/mv2HUxq3B53.glb     --json_file output/exploration_state.json     --config config/hm3d_exploration.yaml     --output output/exploration_with_volume.json -ll 10
 ```
 
 ```bash
